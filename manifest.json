@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Combat Misinformation",
+  "version": "1.0",
+  "description": "Opens the website to show results of testing if the Information is correct.",
+  "permissions": ["scripting"],
+  "action": {
+    "default_title": "Combat Misinformation"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}
