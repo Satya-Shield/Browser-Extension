@@ -1,0 +1,27 @@
+{
+  "name": "google-gen-ai-extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kunj-10/Google-Gen-AI-Extension.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kunj-10/Google-Gen-AI-Extension/issues"
+  },
+  "homepage": "https://github.com/kunj-10/Google-Gen-AI-Extension#readme",
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
+  }
+}
