@@ -1,4 +1,4 @@
-let openBtn : HTMLElement = document.createElement("button")
+let openBtn: HTMLElement = document.createElement("button")
 openBtn.innerText = "Combat Misinformation"
 openBtn.id = "open-btn"
 openBtn.style.display = "none"
@@ -6,16 +6,34 @@ document.body.appendChild(openBtn)
 
 let selectedText: string = "";
 
-document.addEventListener("mouseup", (e: MouseEvent) => {
-  const selection = window.getSelection()?.toString().trim() || "";
+document.addEventListener("selectionchange", () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+        openBtn.style.display = "none";
+        return;
+    }
 
-  if (selection.length > 0) {
-    selectedText = selection;
+    selectedText = selection.toString().trim();
+    if (!selectedText) {
+        openBtn.style.display = "none";
+        return;
+    }
 
-    openBtn.style.left = `${e.pageX}px`;
-    openBtn.style.top = `${e.pageY}px`;
+    const range = selection.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+
+    openBtn.style.position = "absolute";
+    openBtn.style.left = `${rect.left + window.scrollX + 5}px`;
+    openBtn.style.top = `${rect.bottom + window.scrollY - 5}px`;
     openBtn.style.display = "block";
-  } else {
+});
+
+openBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(`"${selectedText}"`).then(() => {
+        alert("Quoted: " + selectedText);
+    });
+
+    window.location.href = "https://www.google.com";
+
     openBtn.style.display = "none";
-  }
 });
