@@ -1,5 +1,7 @@
+const logo = "https://drive.google.com/uc?export=view&id=1UugHoYQegb0Ap4-eGwjlXUYMpzbuXPxV";
 let e = document.createElement("button");
-e.innerText = "Combat Misinformation";
+e.innerText = "Verify on Satya-Shield";
+e.innerHTML = `<img src="${logo}" style="height:19px; vertical-align:middle; margin-right:6px;"> Verify on Satya-Shield`;
 e.id = "open-btn";
 e.style.display = "none";
 document.body.appendChild(e);
