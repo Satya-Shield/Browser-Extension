@@ -1,97 +1,152 @@
-const openBtn = document.createElement("button");
-openBtn.id = "open-btn";
-openBtn.innerText = "Combat Misinformation";
-openBtn.style.display = "none";
-openBtn.style.position = "absolute";
-openBtn.style.zIndex = "9999";
-openBtn.style.userSelect = "none";
-document.body.appendChild(openBtn);
-let selectedText = "";
-let selectedImageSrc: string | null = null;
+let e = document.createElement("button");
+e.innerText = "Combat Misinformation";
+e.id = "open-btn";
+e.style.display = "none";
+document.body.appendChild(e);
 
-function findImageSrcInRange(range: Range): string | null {
-  // Try cloneContents() (works for many cases)
-  const frag = range.cloneContents();
-  const img = frag.querySelector && frag.querySelector("img");
-  if (img && img.src) return img.src;
+let i = "";
+let l = [];
 
-  // Fallback: check commonAncestorContainer for an <img> near the selection
-  let node: Node | null = range.commonAncestorContainer;
-  if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
-  if (node && (node as Element).querySelector) {
-    const img2 = (node as Element).querySelector("img");
-    if (img2 && (img2 as HTMLImageElement).src) return (img2 as HTMLImageElement).src;
-  }
-
-  // Also check anchor/focus node directly (selection might be on an <img>)
-  return null;
+function d(t) {
+  return t.replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
 }
 
 document.addEventListener("selectionchange", () => {
-  const sel = window.getSelection();
-  selectedText = "";
-  selectedImageSrc = null;
-
-  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
-    openBtn.style.display = "none";
+  const t = window.getSelection();
+  if (!t || t.isCollapsed) {
+    e.style.display = "none";
+    i = "";
+    l = [];
     return;
   }
 
-  selectedText = sel.toString().trim();
-  const range = sel.getRangeAt(0);
+  i = t.toString().trim();
+  l = [];
 
-  // If there's text, show for text
-  if (selectedText) {
-    selectedImageSrc = null;
-  }
-  else {
-    const imgSrc = findImageSrcInRange(range);
-    if (imgSrc) selectedImageSrc = imgSrc;
-  }
+  if (t.rangeCount > 0) {
+    const o = t.getRangeAt(0);
+    const n = document.createElement("div");
+    n.appendChild(o.cloneContents());
+    n.querySelectorAll("img").forEach(c => {
+      const s = c.src;
+      if (s) l.push(s);
+    });
 
-  if (!selectedText && !selectedImageSrc) {
-    openBtn.style.display = "none";
-    return;
+    if (!i && l.length === 0) {
+      e.style.display = "none";
+      return;
+    }
+
+    const r = o.getBoundingClientRect();
+    e.style.position = "absolute";
+    e.style.left = `${r.left + window.scrollX + 5}px`;
+    e.style.top = `${r.bottom + window.scrollY - 5}px`;
+    e.style.display = "block";
+  } else {
+    e.style.display = "none";
   }
-  const rect = range.getBoundingClientRect();
-  openBtn.style.left = `${rect.left + window.scrollX + 5}px`;
-  openBtn.style.top = `${rect.bottom + window.scrollY - 5}px`;
-  openBtn.style.display = "block";
 });
 
-openBtn.addEventListener("click", async () => {
-  openBtn.disabled = true;
+e.addEventListener("click", async () => {
+  e.disabled = true;
   try {
-    if (selectedText) {
-      // copy quoted text
-      await navigator.clipboard.writeText(`"${selectedText}"`);
-      alert("Quoted: " + selectedText);
-    } else if (selectedImageSrc) {
-      // Try to copy the actual image (preferred). If not supported, fallback to copying the URL.
-      try {
-        // fetch the image as blob
-        const res = await fetch(selectedImageSrc, { mode: "cors" });
-        const blob = await res.blob();
+    const clipboard = navigator.clipboard;
 
-        const item = new ClipboardItem({ [blob.type]: blob });
-        // navigator.clipboard.write([item]) requires secure context + browser support
-        await navigator.clipboard.write([item]);
-        alert("Image copied to clipboard.");
+    if (l.length > 0 && clipboard && clipboard.write) {
+      const items = [];
+
+      if (i) {
+        const plainBlob = new Blob([i], { type: "text/plain" });
+        const htmlBlob = new Blob([`<div>${d(i)}</div>`], { type: "text/html" });
+        items.push(new window.ClipboardItem({
+          "text/plain": plainBlob,
+          "text/html": htmlBlob
+        }));
+      }
+      for (const src of l) {
+        try {
+          const res = await fetch(src, { mode: "cors" });
+          if (!res.ok) throw new Error("Image fetch failed: " + res.status);
+          const blob = await res.blob();
+          items.push(new window.ClipboardItem({ [blob.type]: blob }));
+        } 
+        catch (imgErr) {
+          console.warn("Couldn't fetch image blob, will fallback to URL:", src, imgErr);
+        }
+      }
+
+      if (items.length > 0) {
+        try {
+          await clipboard.write(items);
+          alert("Copied selection (text + images where supported).");
+        } catch (writeErr) {
+          console.warn("clipboard.write failed:", writeErr);
+          const fallback = buildFallbackText(i, l);
+          await safeWriteText(fallback);
+          alert("Binary clipboard write failed — copied text + image URLs instead.");
+        }
       } 
-      catch (imgErr) {
-        await navigator.clipboard.writeText(selectedImageSrc);
-        alert("Image URL copied to clipboard: " + selectedImageSrc);
+      else {
+        const fallback = buildFallbackText(i, l);
+        await safeWriteText(fallback);
+        alert("Copied text and image URLs to clipboard (binary image copy not available).");
+      }
+    } 
+    else {
+      if (i) {
+        await safeWriteText(`"${i}"`);
+        alert("Quoted: " + i);
+      }
+      else if (l.length) {
+        await safeWriteText(l.join("\n"));
+        alert("Image URL(s) copied to clipboard.");
       }
     }
-    // navigate only after successful copy
+
     window.location.href = "https://www.google.com";
   } 
-  catch (err) {
-    console.error("Copy failed:", err);
-    alert("Copy failed — see console for details.");
+  catch (t) {
+    console.error("Clipboard operation failed:", t);
+    try {
+      // final fallback: try to copy textual fallback
+      const fallback = buildFallbackText(i, l);
+      if (fallback) {
+        await safeWriteText(fallback);
+        alert("Fallback copied to clipboard.");
+      } 
+      else {
+        alert("Nothing to copy.");
+      }
+    } 
+    catch (o) {
+      console.error("Fallback copy failed:", o);
+      alert("Copy failed — see console.");
+    } 
+    finally {
+      window.location.href = "https://www.google.com";
+    }
   } 
   finally {
-    openBtn.disabled = false;
-    openBtn.style.display = "none";
+    e.disabled = false;
+    e.style.display = "none";
   }
 });
+
+function buildFallbackText(text, imgSrcs) {
+  let out = text || "";
+  if (imgSrcs && imgSrcs.length) {
+    out += (out ? "\n\n" : "") + "Image URLs:\n" + imgSrcs.join("\n");
+  }
+  return out;
+}
+
+async function safeWriteText(s) {
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    throw new Error("navigator.clipboard.writeText not available");
+  }
+  return navigator.clipboard.writeText(s);
+}
