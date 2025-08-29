@@ -1,7 +1,7 @@
 const logo = "https://avatars.githubusercontent.com/u/229309561?s=400&u=bfc6489ebfe370531a68c8100797887e594f169d&v=4";
 let e = document.createElement("button");
 e.innerText = "Verify on Satya-Shield";
-e.innerHTML = `<img src=${logo} style="height:19px; vertical-align:middle; margin-right:6px;"> Verify on Satya-Shield`;
+e.innerHTML = `<img src=${logo} style="height:22px; vertical-align:middle; margin-right:6px;"> Verify on Satya-Shield`;
 e.id = "open-btn";
 e.style.display = "none";
 document.body.appendChild(e);
