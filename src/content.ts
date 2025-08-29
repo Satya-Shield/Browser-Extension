@@ -117,8 +117,10 @@ e.addEventListener("click", async () => {
       }
     }
 
-    window.location.href = "https://www.google.com";
-  } catch (t) {
+    // window.location.href = "https://www.google.com";
+    window.open('https://www.google.com', '_blank').focus();
+  } 
+  catch (t) {
     console.error("Clipboard operation failed:", t);
     try {
       const fallback = buildFallbackText(i, l);
@@ -128,13 +130,16 @@ e.addEventListener("click", async () => {
       } else {
         alert("Nothing to copy.");
       }
-    } catch (o) {
+    } 
+    catch (o) {
       console.error("Fallback copy failed:", o);
       alert("Copy failed — see console.");
-    } finally {
-      window.location.href = "https://www.google.com";
+    } 
+    finally {
+      window.open('https://www.google.com', '_blank').focus();
     }
-  } finally {
+  } 
+  finally {
     e.disabled = false;
     e.style.display = "none";
   }
