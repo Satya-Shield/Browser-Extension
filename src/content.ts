@@ -108,35 +108,34 @@ e.addEventListener("click", async () => {
       }
       await safeWriteText(payload);
       alert("Copied text and image URL(s) to clipboard.");
+      window.open(`https://satya-shield-insight.vercel.app/combat?query=${encodeURI(payload)}`, '_blank').focus();
     } else {
-      if (i) {
-        await safeWriteText(`"${i}"`);
-        alert("Quoted: " + i);
-      } else {
-        alert("Nothing to copy.");
-      }
+        if (i) {
+            await safeWriteText(`"${i}"`);
+            alert("Quoted: " + i);
+        } else {
+            alert("Nothing to copy.");
+        }
     }
-
-    // window.location.href = "https://www.google.com";
-    window.open('https://www.google.com', '_blank').focus();
-  } 
-  catch (t) {
+    
+} 
+catch (t) {
     console.error("Clipboard operation failed:", t);
     try {
-      const fallback = buildFallbackText(i, l);
-      if (fallback) {
-        await safeWriteText(fallback);
-        alert("Fallback copied to clipboard.");
-      } else {
-        alert("Nothing to copy.");
-      }
+        const fallback = buildFallbackText(i, l);
+        if (fallback) {
+            await safeWriteText(fallback);
+            alert("Fallback copied to clipboard.");
+        } else {
+            alert("Nothing to copy.");
+        }
     } 
     catch (o) {
-      console.error("Fallback copy failed:", o);
-      alert("Copy failed — see console.");
+        console.error("Fallback copy failed:", o);
+        alert("Copy failed — see console.");
     } 
     finally {
-      window.open('https://www.google.com', '_blank').focus();
+        window.open(`https://satya-shield-insight.vercel.app`, '_blank').focus();
     }
   } 
   finally {
