@@ -106,13 +106,9 @@ e.addEventListener("click", async () => {
       if (l.length) {
         payload += (payload ? "\n\n" : "") + "Image URLs:\n" + l.join("\n");
       }
-      await safeWriteText(payload);
-      alert("Copied text and image URL(s) to clipboard.");
       window.open(`https://satya-shield-insight.vercel.app/combat?query=${encodeURI(payload)}`, '_blank').focus();
     } else {
         if (i) {
-            await safeWriteText(`"${i}"`);
-            alert("Quoted: " + i);
             window.open(`https://satya-shield-insight.vercel.app/combat?query=${encodeURI(i)}`, '_blank').focus();
         } else {
             alert("Nothing to copy.");
@@ -121,12 +117,11 @@ e.addEventListener("click", async () => {
     
 } 
 catch (t) {
-    console.error("Clipboard operation failed:", t);
+    console.error(" operation failed:", t);
     try {
         const fallback = buildFallbackText(i, l);
         if (fallback) {
-            await safeWriteText(fallback);
-            alert("Fallback copied to clipboard.");
+            alert("Fallback .");
         } else {
             alert("Nothing to copy.");
         }
@@ -153,9 +148,3 @@ function buildFallbackText(text, imgSrcs) {
   return out;
 }
 
-async function safeWriteText(s) {
-  if (!navigator.clipboard || !navigator.clipboard.writeText) {
-    throw new Error("navigator.clipboard.writeText not available");
-  }
-  return navigator.clipboard.writeText(s);
-}
