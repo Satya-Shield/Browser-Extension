@@ -5,6 +5,7 @@
 
 [![Download ZIP](https://img.shields.io/badge/Download-ZIP%20Package-4285F4?style=for-the-badge&logo=download&logoColor=white)](<!-- INSERT_ZIP_DOWNLOAD_LINK -->) [![Manual Install](https://img.shields.io/badge/Install-Load%20Unpacked-FF7139?style=for-the-badge&logo=puzzle&logoColor=white)](#-installation-guide)
 [![Coming Soon](https://img.shields.io/badge/Store%20Release-Coming%20Soon-0078D4?style=for-the-badge&logo=store&logoColor=white)](#-browser-compatibility)
+
 [![GitHub Stars](https://img.shields.io/github/stars/Satya-Shield/Browser-Extension?style=for-the-badge&logo=github&color=gold)](https://github.com/Satya-Shield/Browser-Extension/stargazers) [![License](https://img.shields.io/github/license/Satya-Shield/Browser-Extension?style=for-the-badge&color=blue)](LICENSE)
 
 
@@ -113,7 +114,7 @@ Receive fact-checking results promptly with confidence scores and detailed expla
 
 ### **🔽 Download & Extract**
 1. Visit our [Releases Page](<!-- INSERT_RELEASES_LINK -->) 
-2. Download the latest `satyashield-extension-v[version].zip`
+2. Download the latest `satyashield-extension.zip`
 3. Extract the ZIP file to a folder on your computer
 
 ### **Chrome Installation**
@@ -187,14 +188,13 @@ graph TD
 ### **See SatyaShield in Action**
 
 ### **Selection Interface**
-![Selection](<!-- INSERT_SELECTION_SCREENSHOT -->)
+![Selection](https://github.com/user-attachments/assets/f99c4e74-45b8-458d-a1d2-a92b986d38cd)
 
 ### **Results Page**
-![Results](<!-- INSERT_RESULTS_SCREENSHOT -->)
+![Results](https://github.com/user-attachments/assets/1b9a7aea-d64b-4f11-9f0f-2c35cce669ce)
 
 ### **Analysis Dashboard**  
-![Dashboard](<!-- INSERT_DASHBOARD_SCREENSHOT -->)
-
+![Dashboard](https://github.com/user-attachments/assets/4c5e60be-564a-4883-8afc-b75bcbb8f344)
 
 
 </div>
@@ -367,7 +367,7 @@ Browser-Extension/
 
 ### **🎥 Watch SatyaShield in Action**
 
-[![Demo Video](https://youtu.be/59sEW7Id1z0)]
+[![Watch Demo](https://img.youtube.com/vi/59sEW7Id1z0/hqdefault.jpg)](https://youtu.be/59sEW7Id1z0)
 
 *Click above to watch our 2-minute demo showcasing the extension's capabilities*
 
@@ -493,10 +493,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <a href="https://github.com/Satya-Shield/Browser-Extension">
 <img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-black?style=for-the-badge&logo=github&logoColor=white" alt="Star on GitHub"/>
-</a>
-
-<a href="<!-- INSERT_DISCORD_LINK -->">
-<img src="https://img.shields.io/badge/💬%20Join%20Community-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"/>
 </a>
 
 </div>
