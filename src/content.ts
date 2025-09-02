@@ -113,6 +113,7 @@ e.addEventListener("click", async () => {
         if (i) {
             await safeWriteText(`"${i}"`);
             alert("Quoted: " + i);
+            window.open(`https://satya-shield-insight.vercel.app/combat?query=${encodeURI(i)}`, '_blank').focus();
         } else {
             alert("Nothing to copy.");
         }
